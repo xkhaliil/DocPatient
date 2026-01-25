@@ -2,6 +2,7 @@
 
 return [
 
+    'cache_ttl' => env('APP_CACHE_TTL', 60), // in minutes
     /*
     |--------------------------------------------------------------------------
     | Application Name
