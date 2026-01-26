@@ -3,74 +3,122 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
-
+    @livewireStyles
+    <style>
+        :root {
+            --brand-50: #eff6ff;
+            --brand-100: #dbeafe;
+            --brand-200: #bfdbfe;
+            --brand-500: #3b82f6;
+            --brand-600: #2563eb;
+            --brand-700: #1d4ed8;
+            --brand-800: #1e40af;
+            --accent-500: #0ea5a4;
+            --success-600: #16a34a;
+            --warning-600: #d97706;
+            --danger-600: #dc2626;
+            --ink-900: #0f172a;
+            --ink-700: #334155;
+            --ink-500: #64748b;
+            --surface-0: #ffffff;
+            --surface-50: #f8fafc;
+            --surface-100: #f1f5f9;
+            --border-200: #e2e8f0;
+        }
+        body {
+            font-family: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+            background: var(--surface-100);
+            color: var(--ink-900);
+        }
+        .container-app {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+        .card {
+            background: var(--surface-0);
+            border: 1px solid var(--border-200);
+            border-radius: 1rem;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            padding: 0.6rem 1rem;
+            transition: all 150ms ease;
+        }
+        .btn-primary {
+            background: var(--brand-600);
+            color: #fff;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24);
+        }
+        .btn-primary:hover {
+            background: var(--brand-700);
+        }
+        .btn-secondary {
+            background: #fff;
+            color: var(--ink-900);
+            border: 1px solid var(--border-200);
+        }
+        .btn-secondary:hover {
+            border-color: var(--brand-200);
+            color: var(--brand-700);
+        }
+        .focus-ring:focus-visible {
+            outline: 3px solid rgba(59, 130, 246, 0.35);
+            outline-offset: 2px;
+        }
+    </style>
     <title>App Layout</title>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="antialiased">
 
-<!-- ===== Header / Navigation ===== -->
-<header class="bg-teal-600 shadow-lg">
-    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-
-        <!-- Logo -->
-        <div class="text-2xl font-semibold text-white tracking-wide">
+<header class="bg-white border-b border-slate-200">
+    <div class="container-app py-5 flex items-center justify-between">
+        <div class="flex items-center gap-3 text-xl font-semibold text-slate-900">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">M</span>
             MediBook
         </div>
 
-        <!-- Navigation -->
-        <nav class="space-x-6 hidden md:block">
-            <a href="/" class="text-teal-50 hover:text-white transition">Home</a>
-            <a href="/appointments" class="text-teal-50 hover:text-white transition">Appointments</a>
-            <a href="/cabinets" class="text-teal-50 hover:text-white transition">Doctors</a>
-            <a href="#" class="text-teal-50 hover:text-white transition">Contact</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+            <a href="/" class="focus-ring hover:text-blue-700 transition">Home</a>
+            <a href="/appointments" class="focus-ring hover:text-blue-700 transition">Appointments</a>
+            <a href="/cabinets" class="focus-ring hover:text-blue-700 transition">Doctors</a>
+            <a href="#" class="focus-ring hover:text-blue-700 transition">Contact</a>
         </nav>
 
-        <!-- Mobile Menu Button -->
-        <button class="md:hidden text-teal-50 hover:text-white focus:outline-none">
-            ☰
-        </button>
+        <button class="md:hidden btn btn-secondary focus-ring">Menu</button>
     </div>
 </header>
 
-
-<!-- ===== Main Content ===== -->
 <main class="py-10">
-    <div class="mx-auto max-w-6xl px-4">
-
-        <!-- Content Slot -->
-        <div class="bg-white rounded-xl shadow-md p-6">
-            {{$slot}}
+    <div class="container-app">
+        <div class="card p-6">
+            {{ $slot }}
         </div>
-
     </div>
 </main>
 
-
-<!-- ===== Footer ===== -->
-<footer class="bg-teal-700 text-teal-100 mt-12">
-    <div class="mx-auto max-w-6xl px-4 py-6">
-
-        <div class="flex flex-col md:flex-row justify-between items-center">
-
-            <!-- Left -->
-            <p class="text-sm">
-                © 2025 MediBook — All Rights Reserved.
-            </p>
-
-            <!-- Right -->
-            <div class="mt-3 md:mt-0 space-x-4">
-                <a href="#" class="hover:text-white text-sm transition">Privacy Policy</a>
-                <a href="#" class="hover:text-white text-sm transition">Terms of Service</a>
-                <a href="#" class="hover:text-white text-sm transition">Help</a>
-            </div>
+<footer class="mt-12 bg-white border-t border-slate-200">
+    <div class="container-app py-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between text-sm text-slate-500">
+        <p>© 2025 MediBook — All Rights Reserved.</p>
+        <div class="flex items-center gap-4">
+            <a href="#" class="focus-ring hover:text-blue-700 transition">Privacy Policy</a>
+            <a href="#" class="focus-ring hover:text-blue-700 transition">Terms of Service</a>
+            <a href="#" class="focus-ring hover:text-blue-700 transition">Help</a>
         </div>
-
     </div>
 </footer>
 
+@livewireScripts
 </body>
 </html>

@@ -49,8 +49,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('appointments', \App\Http\Controllers\AppointmentController::class);
 
+    Route::view('/style-guide', 'style-guide')->name('style-guide');
 
-    Route::get('/profile', [App\Http\Controllers\Userzone\ProfileController::class, 'edit'])->name('profile.edit');
+
     Route::patch('/profile', [App\Http\Controllers\Userzone\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [App\Http\Controllers\Userzone\ProfileController::class, 'destroy'])->name('profile.destroy');
 });

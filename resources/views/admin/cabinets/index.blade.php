@@ -1,7 +1,7 @@
 <x-app-layout title="Cabinets">
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-slate-900 leading-tight">
             All Cabinets
         </h2>
     </x-slot>
@@ -10,34 +10,33 @@
         {{ $cabinets->links() }}
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        <div class="bg-white shadow-md border border-gray-200 rounded-xl overflow-hidden">
+    <div class="py-8">
+        <div class="table-shell">
 
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-100">
+                <thead class="table-head">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-left">
                         Doctor
                     </th>
 
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-left">
                         Cabinet
                     </th>
 
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-left">
                         Location
                     </th>
 
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-right">
                         Actions
                     </th>
                 </tr>
                 </thead>
 
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-slate-100 text-sm text-slate-700">
                 @foreach($cabinets as $cabinet)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-slate-50">
 
                         {{-- DOCTOR --}}
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -46,14 +45,14 @@
                                 <img
                                     src="{{ $cabinet->doctor->getFirstMediaUrl('profile')
                                         ?: 'https://ui-avatars.com/api/?size=128&name=' . urlencode($cabinet->doctor->name) }}"
-                                    class="w-10 h-10 rounded-full object-cover border"
+                                    class="w-10 h-10 rounded-full object-cover border border-slate-200"
                                 >
 
                                 <div>
-                                    <p class="font-medium text-gray-800">
+                                    <p class="font-semibold text-slate-900">
                                         Dr. {{ $cabinet->doctor->name }}
                                     </p>
-                                    <p class="text-xs text-gray-500">
+                                    <p class="text-xs text-slate-500">
                                         {{ $cabinet->doctor->email }}
                                     </p>
                                 </div>
@@ -64,13 +63,13 @@
                         {{-- CABINET NAME --}}
                         <td class="px-6 py-4 whitespace-nowrap">
                             <a href="/admin/cabinets/{{ $cabinet->id }}"
-                               class="text-gray-800 font-semibold hover:text-teal-600">
+                               class="text-slate-900 font-semibold hover:text-blue-700 focus-ring">
                                 {{ $cabinet->name }}
                             </a>
                         </td>
 
                         {{-- CABINET LOCATION --}}
-                        <td class="px-6 py-4 whitespace-nowrap text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-slate-500">
                             {{ Str::limit($cabinet->location, 40) }}
                         </td>
 
@@ -80,7 +79,7 @@
 
                                 {{-- EDIT --}}
                                 <a href="/admin/cabinets/{{ $cabinet->id }}/edit"
-                                   class="text-blue-600 hover:text-blue-800 font-medium">
+                                   class="btn btn-ghost focus-ring">
                                     Edit
                                 </a>
 
@@ -90,7 +89,7 @@
                                       onsubmit="return confirm('Are you sure?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-600 hover:text-red-800 font-medium">
+                                    <button class="btn focus-ring text-red-600 hover:text-red-700">
                                         Delete
                                     </button>
                                 </form>

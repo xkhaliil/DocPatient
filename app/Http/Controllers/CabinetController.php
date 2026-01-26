@@ -12,9 +12,7 @@ class CabinetController extends Controller
      */
     public function index()
     {
-        $cabinets = Cabinet::with(['doctor:id,name,email','doctor.media'])->paginate(10);
-
-        return view('cabinets.index', compact('cabinets'));
+        return view('cabinets.index');
     }
 
     /**
