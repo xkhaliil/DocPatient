@@ -5,8 +5,6 @@
     <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a>
 </p>
 
-
-
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
@@ -17,15 +15,18 @@
 ---
 
 ## About this Starter Pack
-<div style="background-color: #f6f8fa; padding: 10px; border-radius: 5px;">
-This is a starter pack for <strong>Laravel tailored for educational purposes</strong>. 
 
-It is aimed at helping students and beginners to quickly set up a Laravel development environment that allows for 
+<div style="background-color: #f6f8fa; padding: 10px; border-radius: 5px;">
+This is a starter pack for <strong>Laravel tailored for educational purposes</strong>.
+
+It is aimed at helping students and beginners to quickly set up a Laravel development environment that allows for
 learning the basics without the need to configure everything from scratch.
+
 </div>
 
 ### Changes from the original Laravel repository
-It provides a pre-configured environment with some opinionated settings and packages for the educational context. 
+
+It provides a pre-configured environment with some opinionated settings and packages for the educational context.
 Customisation was done based on Laravel version 12.x. (12.37.0 on November 9th, 2025).
 
 - Added **barryvdh/laravel-debugbar** for debug info in the browser
@@ -36,9 +37,169 @@ Customisation was done based on Laravel version 12.x. (12.37.0 on November 9th, 
 - Replaced PHP Unit by **Pest PHP** for testing, kept basic example tests
 - Some other small tweaks in configuration files, routes, controller, and view organisation to better reflect the educational purpose (rigid structure)
 
+---
+
+## 📚 API Documentation
+
+This application provides several REST API endpoints for health tips and news content.
+
+### Health Tips API
+
+#### Get All Health Tips
+
+**GET** `/v1/health-tips`
+
+Returns a list of all health tips in the database. Supports filtering by category, source, and search terms.
+
+**Query Parameters:**
+
+- `category` (optional): Filter by health tip category
+- `source` (optional): Filter by source organization
+- `search` (optional): Search in title and description fields
+
+**Example Requests:**
+
+```bash
+# Get all health tips
+curl http://docpat.test/v1/health-tips
+
+# Filter by category
+curl http://docpat.test/v1/health-tips?category=Nutrition
+
+# Filter by source
+curl http://docpat.test/v1/health-tips?source=WHO
+
+# Search in title and description
+curl http://docpat.test/v1/health-tips?search=water
+
+# Combine filters
+curl http://docpat.test/v1/health-tips?category=Nutrition&source=WHO&search=water
+```
+
+**Response:**
+
+```json
+[
+    {
+        "id": 1,
+        "title": "Stay Hydrated",
+        "description": "Drinking enough water daily supports digestion, circulation, and temperature regulation.",
+        "category": "Nutrition",
+        "source": "WHO"
+    },
+    {
+        "id": 2,
+        "title": "Exercise Regularly",
+        "description": "Physical activity helps maintain healthy weight and reduces risk of chronic diseases.",
+        "category": "Fitness",
+        "source": "CDC"
+    }
+]
+```
+
+#### Get Random Health Tip
+
+**GET** `/v1/health-tips/random`
+
+Returns a single random health tip. Results are cached for 30 minutes.
+
+**Response:**
+
+```json
+{
+    "id": 9,
+    "title": "Take Screen Breaks",
+    "description": "Rest your eyes every 20 minutes to reduce eye strain.",
+    "category": "Vision",
+    "source": "AAO"
+}
+```
+
+#### Get Available Categories
+
+**GET** `/v1/health-tips/categories`
+
+Returns a list of all unique categories available for filtering.
+
+**Response:**
+
+```json
+["Fitness", "Mental Health", "Nutrition", "Vision", "Wellness"]
+```
+
+#### Get Available Sources
+
+**GET** `/v1/health-tips/sources`
+
+Returns a list of all unique sources available for filtering.
+
+**Response:**
+
+```json
+["AAO", "CDC", "FDA", "NIH", "WHO"]
+```
+
+### News API
+
+#### Get Random News Article
+
+**GET** `/api/random-news`
+
+Returns a random news article from cached news data. Articles are cached and updated periodically.
+
+**Response:**
+
+```json
+{
+    "id": "article_123",
+    "title": "Latest Medical Research Breakthrough",
+    "description": "Scientists discover new treatment method for common health condition.",
+    "source_title": "Medical Journal",
+    "pub_date": "2026-01-25T10:30:00Z",
+    "creator": "Dr. Jane Smith",
+    "article_link": "https://example.com/article/123"
+}
+```
+
+### Error Responses
+
+All endpoints may return the following error responses:
+
+**404 Not Found:**
+
+```json
+{
+    "message": "No health tips available"
+}
+```
+
+**500 Internal Server Error:**
+
+```json
+null
+```
+
+### Testing the APIs
+
+You can test these endpoints using curl, Postman, or any HTTP client:
+
+```bash
+# Get all health tips
+curl http://docpat.test/v1/health-tips
+
+# Get random health tip
+curl http://docpat.test/v1/health-tips/random
+
+# Get random news
+curl http://docpat.test/api/random-news
+```
+
+---
+
 Everything that follows below (and the shields in the header) are part of the original Laravel README.md file.
 
 ---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

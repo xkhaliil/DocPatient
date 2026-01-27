@@ -3,6 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Services\NewsApiService;
+use App\Http\Controllers\Api\HealthTipController;
+
+
+Route::prefix('v1')->group(function () {
+    Route::get('/health-tips', [HealthTipController::class, 'index']);
+    Route::get('/health-tips/random', [HealthTipController::class, 'random']);
+    Route::get('/health-tips/categories', [HealthTipController::class, 'categories']);
+    Route::get('/health-tips/sources', [HealthTipController::class, 'sources']);
+});
+
 Route::get('/api/random-news', function (NewsApiService $service) {
     $articles = $service->getArticles(); // Cached 10 articles
     if (!$articles) return response()->json(null);
