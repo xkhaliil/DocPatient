@@ -1,5 +1,43 @@
     <x-site-layout title="Welcome">
+        
+        <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-2 mb-10 rounded-2xl">
+            <div class="flex items-center justify-center space-x-10">
+                <div class="">
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+             <div class="md:flex">
+                
+                <div class="p-6 md:w-3/5 lg:w-full">
+                    <div class="flex items-center gap-2 mb-3 flex-wrap">
+                        <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">Source Name</span>
+                        <span class="text-xs text-gray-500">Jan 25, 2026</span>
+                        <span class="text-xs text-gray-500">• Reliability: 8/10</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer">
+                        Article Title Goes Here - This is a Placeholder
+                    </h2>
+                    <p class="text-gray-600 mb-4 line-clamp-3">
+                        This is the article description or excerpt. It provides a brief summary of the article content to give readers an idea of what the article is about before they click through to read more.
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">By Author Name</span>
+                        <a href="#" 
+                           class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                            Read more 
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+                </div>
+                <div class="bg-white rounded-lg p-8 max-w-md w-full text-black">
+el trya
+                </div>
 
+            </div>
+        </section>
         {{-- HERO SECTION --}}
         <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 mb-10 rounded-2xl">
             <div class="max-w-5xl mx-auto text-center px-6">
