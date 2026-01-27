@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+'newsdatahub' => [
+    'key' => env('NEWSDATAHUB_API_KEY'),
+    'base_url' => env('NEWSDATAHUB_BASE_URL'),
+],
 
 ];

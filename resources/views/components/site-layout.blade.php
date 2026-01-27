@@ -1,6 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+let lastNewsId = null;
+
+async function loadRandomNews() {
+    const card = document.getElementById('newsCard');
+    const loading = document.getElementById('newsLoading');
+    const content = document.getElementById('newsContent');
+
+    try {
+        loading.classList.remove('hidden');
+        content.classList.add('hidden');
+        card.classList.add('opacity-0');
+
+        const res = await fetch('/api/random-news');
+        
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
+        const data = await res.json();
+
+        if (!data || !data.title) {
+            console.warn('No news data received or missing required fields');
+            return;
+        }
+
+        // Avoid showing the same article twice in a row
+        if (data.id === lastNewsId) {
+            // Try loading again if it's the same article
+            setTimeout(loadRandomNews, 100);
+            return;
+        }
+
+        lastNewsId = data.id;
+
+        document.getElementById('newsSource').textContent =
+            data.source_title?.trim() || 'Unknown';
+        document.getElementById('newsDate').textContent =
+            data.pub_date
+                ? new Date(data.pub_date).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })
+                : '';
+        document.getElementById('newsTitle').textContent =
+            data.title?.trim() || 'No title available';
+        document.getElementById('newsDescription').textContent =
+            data.description?.trim() || 'No description available';
+        document.getElementById('newsAuthor').textContent =
+            data.creator?.trim()
+                ? `By ${data.creator.trim()}`
+                : 'By Unknown';
+        document.getElementById('newsLink').href = data.article_link || '#';
+        document.getElementById('newsLink').onclick = function(e) {
+            if (this.href && this.href !== '#') {
+                window.open(this.href, '_blank');
+                e.preventDefault();
+            }
+        };
+
+        setTimeout(() => {
+            loading.classList.add('hidden');
+            content.classList.remove('hidden');
+            card.classList.remove('opacity-0');
+        }, 300);
+
+    } catch (e) {
+        console.error('Failed to load news', e);
+        // Show error message
+        loading.innerHTML = '<div class="text-red-600 text-sm">Failed to load news. Retrying...</div>';
+        // Retry after 5 seconds on error
+        setTimeout(loadRandomNews, 5000);
+    }
+}
+
+// Load random news when page loads
+window.addEventListener('DOMContentLoaded', loadRandomNews);
+
+</script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.bunny.net">

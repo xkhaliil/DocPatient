@@ -1,7 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Services\NewsApiService;
+Route::get('/api/random-news', function (NewsApiService $service) {
+    $articles = $service->getArticles(); // Cached 10 articles
+    if (!$articles) return response()->json(null);
 
+    $random = $articles[array_rand($articles)];
+
+    return response()->json($random);
+});
 Route::get('/', \App\Http\Controllers\WelcomeController::class);
 
 

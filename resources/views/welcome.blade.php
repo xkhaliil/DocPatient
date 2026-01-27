@@ -2,35 +2,50 @@
         
         <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-2 mb-10 rounded-2xl">
             <div class="flex items-center justify-center space-x-10">
-                <div class="">
-            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-             <div class="md:flex">
-                
-                <div class="p-6 md:w-3/5 lg:w-full">
-                    <div class="flex items-center gap-2 mb-3 flex-wrap">
-                        <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">Source Name</span>
-                        <span class="text-xs text-gray-500">Jan 25, 2026</span>
-                        <span class="text-xs text-gray-500">• Reliability: 8/10</span>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer">
-                        Article Title Goes Here - This is a Placeholder
-                    </h2>
-                    <p class="text-gray-600 mb-4 line-clamp-3">
-                        This is the article description or excerpt. It provides a brief summary of the article content to give readers an idea of what the article is about before they click through to read more.
-                    </p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-500">By Author Name</span>
-                        <a href="#" 
-                           class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
-                            Read more 
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+                <div class="w-full">
+            <article id="newsCard"
+    class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-500">
+
+    <div class="p-2">
+        <div id="newsLoading" class="flex items-center justify-center py-4">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="ml-2 text-sm text-gray-500">Loading news...</span>
+        </div>
+        <div id="newsContent" class="hidden">
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+                <span id="newsSource"
+                      class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                    Source Name
+                </span>
+                <span id="newsDate" class="text-xs text-gray-500">
+                    Jan 25, 2026
+                </span>
             </div>
-        </article>
+
+        <h2 id="newsTitle"
+            class="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer">
+            Article Title Goes Here
+        </h2>
+
+        <p id="newsDescription"
+           class="text-gray-600 mb-4 line-clamp-3">
+            Article description placeholder
+        </p>
+
+        <div class="flex items-center justify-between">
+            <span id="newsAuthor" class="text-sm text-gray-500">
+                By Author Name
+            </span>
+
+            <a id="newsLink" href="#" target="_blank"
+               class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                Read more →
+            </a>
+        </div>
+    </div>
+</div>
+</article>
+
                 </div>
                 <div class="bg-white rounded-lg p-8 max-w-md w-full text-black">
 el trya
