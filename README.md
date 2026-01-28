@@ -1,252 +1,358 @@
-<p align="center" style="font-size: 24px; margin-bottom: -25px; color: #EF3B2D;">
-    <strong>Educational<br/> Starter Pack<br/></strong><span style="color:gray">for</span>
-</p>
-<p align="center">
-    <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a>
-</p>
+# DocPat - Medical Appointment Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive Laravel-based medical appointment management system designed to streamline healthcare scheduling and patient management.
 
----
+## 🏥 Project Overview
 
-## About this Starter Pack
+DocPat is a modern medical appointment management system built with Laravel 12.37, featuring:
 
-<div style="background-color: #f6f8fa; padding: 10px; border-radius: 5px;">
-This is a starter pack for <strong>Laravel tailored for educational purposes</strong>.
+- **Appointment Scheduling**: Efficient booking and management of medical appointments
+- **Multi-Role System**: Admin, Doctor, and Patient roles with appropriate permissions
+- **Real-time Features**: Livewire components for dynamic user interactions
+- **Location Services**: IP-based location detection for personalized experiences
+- **Health Tips API**: Curated health information with filtering capabilities
+- **Google Maps Integration**: Nearby medical center location services
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Media Management**: File upload capabilities with Spatie Media Library
 
-It is aimed at helping students and beginners to quickly set up a Laravel development environment that allows for
-learning the basics without the need to configure everything from scratch.
+## 🚀 Core Technologies
 
-</div>
+- **Backend**: Laravel 12.37 (PHP 8.3+)
+- **Frontend**: Tailwind CSS 3.1, Alpine.js 3.4, Vite 7.0
+- **Real-time**: Livewire 4.1
+- **Database**: SQLite (default), MySQL/PostgreSQL supported
+- **Testing**: Pest PHP 4.1
+- **Backup**: Spatie Laravel Backup 9.3
+- **Media**: Spatie Laravel Media Library 11.17
 
-### Changes from the original Laravel repository
+## 📋 Prerequisites
 
-It provides a pre-configured environment with some opinionated settings and packages for the educational context.
-Customisation was done based on Laravel version 12.x. (12.37.0 on November 9th, 2025).
+- PHP 8.3 or higher
+- Composer 2.0+
+- Node.js 18+ and npm
+- SQLite (default) or MySQL/PostgreSQL
 
-- Added **barryvdh/laravel-debugbar** for debug info in the browser
-- Altered **.env.example** for local development (SQLite database, debug mode on, cache and session set to file)
-- Added **roave/security-advisories** to prevent installation of packages with known security issues
-- Used **laravel/breeze** for authentication scaffolding with Blade templates (but moved all of the component views to a `components.breeze` subfolder for better organization)
-- Replaced vite and related front-end dependencies by **CDN includes of Tailwind CSS and Alpine JS** to keep things simple
-- Replaced PHP Unit by **Pest PHP** for testing, kept basic example tests
-- Some other small tweaks in configuration files, routes, controller, and view organisation to better reflect the educational purpose (rigid structure)
+## 🛠️ Installation Guide
 
----
+### Step 1: Clone the Repository
 
-## 📚 API Documentation
+```bash
+git clone <repository-url>
+cd docpat
+```
 
-This application provides several REST API endpoints for health tips and news content.
+### Step 2: Install PHP Dependencies
+
+```bash
+composer install
+```
+
+### Step 3: Install Node Dependencies
+
+```bash
+npm install
+```
+
+### Step 4: Environment Configuration
+
+```bash
+# Copy environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### Step 5: Database Setup
+
+```bash
+# Run migrations
+php artisan migrate
+
+# Seed the database (optional)
+php artisan db:seed
+```
+
+### Step 6: Build Frontend Assets
+
+```bash
+# Development build
+npm run dev
+
+# Production build
+npm run build
+```
+
+### Step 7: Start the Development Server
+
+```bash
+php artisan serve
+```
+
+Visit `http://localhost:8000` to access the application.
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Key configuration options in `.env`:
+
+```env
+# Application
+APP_NAME=DocPat
+APP_URL=http://localhost
+
+# Database
+DB_CONNECTION=sqlite
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=docpat
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Mail Configuration
+MAIL_MAILER=log
+# MAIL_MAILER=smtp
+# MAIL_HOST=smtp.mailtrap.io
+# MAIL_PORT=2525
+
+# IP Geolocation Service
+IPGEOLOCATION_API_KEY=your_api_key_here
+```
+
+### IP Geolocation Setup
+
+The system uses ipgeolocation.io for location services:
+
+1. Sign up at [ipgeolocation.io](https://ipgeolocation.io)
+2. Get your free API key
+3. Add to `.env`: `IPGEOLOCATION_API_KEY=your_actual_key`
+
+## 📡 API Documentation
 
 ### Health Tips API
 
+**Base URL**: `/api/health-tips`
+
 #### Get All Health Tips
 
-**GET** `/v1/health-tips`
+```http
+GET /api/health-tips
+```
 
-Returns a list of all health tips in the database. Supports filtering by category, source, and search terms.
+**Parameters:**
 
-**Query Parameters:**
+- `category` (optional): Filter by category
+- `source` (optional): Filter by source
+- `limit` (optional): Limit results (default: 10)
 
-- `category` (optional): Filter by health tip category
-- `source` (optional): Filter by source organization
-- `search` (optional): Search in title and description fields
+**Response:**
 
-**Example Requests:**
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "title": "10 Tips for Better Sleep",
+            "content": "Getting quality sleep is essential for...",
+            "category": "sleep",
+            "source": "Health Magazine",
+            "author": "Dr. Smith",
+            "published_at": "2025-01-15",
+            "read_more_url": "https://example.com/article/1"
+        }
+    ]
+}
+```
+
+#### Get Single Health Tip
+
+```http
+GET /api/health-tips/{id}
+```
+
+### Authentication API
+
+The system uses Laravel Breeze for authentication with standard endpoints:
+
+- `POST /login` - User login
+- `POST /register` - User registration
+- `POST /logout` - User logout
+- `GET /profile` - User profile
+
+## 🧪 Testing
+
+Run the test suite using Pest PHP:
 
 ```bash
-# Get all health tips
-curl http://docpat.test/v1/health-tips
+# Run all tests
+php artisan test
 
-# Filter by category
-curl http://docpat.test/v1/health-tips?category=Nutrition
+# Run specific test suite
+php artisan test --testsuite=Feature
 
-# Filter by source
-curl http://docpat.test/v1/health-tips?source=WHO
-
-# Search in title and description
-curl http://docpat.test/v1/health-tips?search=water
-
-# Combine filters
-curl http://docpat.test/v1/health-tips?category=Nutrition&source=WHO&search=water
+# Run with coverage
+php artisan test --coverage
 ```
 
-**Response:**
+## 🚀 Deployment
 
-```json
-[
-    {
-        "id": 1,
-        "title": "Stay Hydrated",
-        "description": "Drinking enough water daily supports digestion, circulation, and temperature regulation.",
-        "category": "Nutrition",
-        "source": "WHO"
-    },
-    {
-        "id": 2,
-        "title": "Exercise Regularly",
-        "description": "Physical activity helps maintain healthy weight and reduces risk of chronic diseases.",
-        "category": "Fitness",
-        "source": "CDC"
-    }
-]
-```
+### Production Checklist
 
-#### Get Random Health Tip
+1. **Environment Setup**
 
-**GET** `/v1/health-tips/random`
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-Returns a single random health tip. Results are cached for 30 minutes.
+2. **Optimize for Production**
 
-**Response:**
+    ```bash
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+    npm run build
+    ```
 
-```json
-{
-    "id": 9,
-    "title": "Take Screen Breaks",
-    "description": "Rest your eyes every 20 minutes to reduce eye strain.",
-    "category": "Vision",
-    "source": "AAO"
-}
-```
+3. **Database Migration**
 
-#### Get Available Categories
+    ```bash
+    php artisan migrate --force
+    ```
 
-**GET** `/v1/health-tips/categories`
+4. **Storage Link**
+    ```bash
+    php artisan storage:link
+    ```
 
-Returns a list of all unique categories available for filtering.
+### Vercel Deployment
 
-**Response:**
-
-```json
-["Fitness", "Mental Health", "Nutrition", "Vision", "Wellness"]
-```
-
-#### Get Available Sources
-
-**GET** `/v1/health-tips/sources`
-
-Returns a list of all unique sources available for filtering.
-
-**Response:**
-
-```json
-["AAO", "CDC", "FDA", "NIH", "WHO"]
-```
-
-### News API
-
-#### Get Random News Article
-
-**GET** `/api/random-news`
-
-Returns a random news article from cached news data. Articles are cached and updated periodically.
-
-**Response:**
-
-```json
-{
-    "id": "article_123",
-    "title": "Latest Medical Research Breakthrough",
-    "description": "Scientists discover new treatment method for common health condition.",
-    "source_title": "Medical Journal",
-    "pub_date": "2026-01-25T10:30:00Z",
-    "creator": "Dr. Jane Smith",
-    "article_link": "https://example.com/article/123"
-}
-```
-
-### Error Responses
-
-All endpoints may return the following error responses:
-
-**404 Not Found:**
-
-```json
-{
-    "message": "No health tips available"
-}
-```
-
-**500 Internal Server Error:**
-
-```json
-null
-```
-
-### Testing the APIs
-
-You can test these endpoints using curl, Postman, or any HTTP client:
+The project includes Vercel configuration:
 
 ```bash
-# Get all health tips
-curl http://docpat.test/v1/health-tips
+# Install Vercel CLI
+npm i -g vercel
 
-# Get random health tip
-curl http://docpat.test/v1/health-tips/random
-
-# Get random news
-curl http://docpat.test/api/random-news
+# Deploy
+vercel --prod
 ```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### 1. "Unknown, Unknown" Location
+
+**Problem**: Location shows "unknown, unknown"
+**Solution**:
+
+- Verify IPGEOLOCATION_API_KEY in .env
+- Check if using localhost (uses fallback)
+- Test with public IP: Visit `/debug/ipinfo`
+
+#### 2. Missing App Key
+
+**Problem**: `MissingAppKeyException`
+**Solution**:
+
+```bash
+php artisan key:generate
+```
+
+#### 3. Database Connection Issues
+
+**Problem**: Database connection failed
+**Solution**:
+
+- Check .env database configuration
+- Ensure database server is running
+- For SQLite: `touch database/database.sqlite`
+
+#### 4. Permission Issues
+
+**Problem**: Storage/logs permission denied
+**Solution**:
+
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+#### 5. Node Modules Issues
+
+**Problem**: npm install fails
+**Solution**:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Debug Routes
+
+Access debug information:
+
+- `/debug/ipinfo` - Test IP geolocation service
+- Check Laravel logs: `storage/logs/laravel.log`
+
+## 📁 Project Structure
+
+```
+docpat/
+├── app/
+│   ├── Http/Controllers/     # Application controllers
+│   ├── Models/              # Eloquent models
+│   ├── Services/            # Business logic services
+│   └── Livewire/            # Livewire components
+├── config/                  # Configuration files
+├── database/
+│   ├── migrations/          # Database migrations
+│   └── seeders/             # Database seeders
+├── resources/
+│   ├── views/               # Blade templates
+│   ├── css/                 # Stylesheets
+│   └── js/                  # JavaScript files
+├── routes/                  # Application routes
+├── tests/                   # Test files
+└── storage/                 # Logs, cache, uploads
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Standards
+
+- Follow PSR-12 coding standards
+- Write tests for new features
+- Update documentation as needed
+- Use meaningful commit messages
+
+## � License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+
+- Check the troubleshooting section above
+- Review Laravel documentation: https://laravel.com/docs
+- Check existing issues in the repository
+
+## 🙏 Acknowledgments
+
+- Laravel Framework - The PHP framework for web artisans
+- Tailwind CSS - A utility-first CSS framework
+- Livewire - A full-stack framework for Laravel
+- Spatie Packages - Quality Laravel packages
+- ipgeolocation.io - Free IP geolocation service
 
 ---
 
-Everything that follows below (and the shields in the header) are part of the original Laravel README.md file.
-
----
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Built with ❤️ for the healthcare community**
