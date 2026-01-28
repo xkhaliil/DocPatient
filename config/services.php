@@ -38,5 +38,9 @@ return [
     'key' => env('NEWSDATAHUB_API_KEY'),
     'base_url' => env('NEWSDATAHUB_BASE_URL'),
 ],
+    'ipgeolocation' => [
+        'endpoint' => 'https://api.ipgeolocation.io/v2/ipgeo',
+        'api_key' => env('IPGEOLOCATION_API_KEY', null),
+    ],
 
 ];

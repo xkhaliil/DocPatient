@@ -23,6 +23,25 @@ Route::get('/api/random-news', function (NewsApiService $service) {
 });
 Route::get('/', \App\Http\Controllers\WelcomeController::class);
 
+// Debug route for IpInfo testing
+Route::get('/debug/ipinfo', function (\App\Services\IpInfoService $ipInfoService, \Illuminate\Http\Request $request) {
+    $ip = $request->get('ip', $request->ip());
+    
+    return response()->json([
+        'ip' => $ip,
+        'country' => $ipInfoService->getCountry($ip),
+        'city' => $ipInfoService->getCity($ip),
+        'full_info' => $ipInfoService->getIpInfo($ip),
+        'request_ip' => $request->ip(),
+        'server_vars' => [
+            'HTTP_X_FORWARDED_FOR' => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null,
+            'HTTP_X_REAL_IP' => $_SERVER['HTTP_X_REAL_IP'] ?? null,
+            'HTTP_CLIENT_IP' => $_SERVER['HTTP_CLIENT_IP'] ?? null,
+            'REMOTE_ADDR' => $_SERVER['REMOTE_ADDR'] ?? null,
+        ]
+    ]);
+});
+
 
 Route::resource('cabinets', \App\Http\Controllers\CabinetController::class)->only(['index', 'show']);
 
