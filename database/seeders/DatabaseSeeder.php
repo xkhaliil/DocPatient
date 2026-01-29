@@ -75,5 +75,10 @@ class DatabaseSeeder extends Seeder
 
                 $appointment->save();
             });
+
+        // -----------------------------------------
+        // 6) Seed Health Tips
+        // -----------------------------------------
+        $this->call(HealthTipsTableSeeder::class);
     }
 }
