@@ -42,5 +42,6 @@ return [
         'endpoint' => 'https://api.ipgeolocation.io/v2/ipgeo',
         'api_key' => env('IPGEOLOCATION_API_KEY', null),
     ],
+    
 
 ];
