@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use App\Services\HealthTipService;
+use Carbon\Carbon;
 
 new class extends Component {
     public $title = '';
@@ -13,16 +14,21 @@ new class extends Component {
     public $isLoading = true;
     public $hasError = false;
     public $errorMessage = '';
+    public $isFallback = false;
+    public $lastRotationTime = null;
+    private $rotationInterval = 30; // minutes
 
     public function mount(HealthTipService $healthTipService)
     {
-        $this->loadNews($healthTipService);
+        // Check if we need to rotate fallback data on initial load
+        $this->checkRotationAndLoad($healthTipService);
     }
 
     public function loadNews(HealthTipService $healthTipService)
     {
         $this->isLoading = true;
         $this->hasError = false;
+        $this->isFallback = false;
         
         try {
             // Try latest news first
@@ -42,6 +48,8 @@ new class extends Component {
                 $this->displayHealthTip($result['data'][0] ?? $result['data']);
             } elseif (isset($result['fallback'])) {
                 // Use fallback data (this is valid, not an error)
+                $this->isFallback = true;
+                $this->lastRotationTime = now();
                 $this->displayHealthTip($result['fallback']);
             } else {
                 // Complete failure
@@ -53,6 +61,30 @@ new class extends Component {
         } finally {
             $this->isLoading = false;
         }
+    }
+
+    private function checkRotationAndLoad(HealthTipService $healthTipService)
+    {
+        // Check if we need to rotate fallback data on initial load
+        if ($this->shouldRotateFallback()) {
+            // Force a fresh load to get new random data
+            $this->loadNews($healthTipService);
+        } else {
+            // Normal load
+            $this->loadNews($healthTipService);
+        }
+    }
+
+    private function shouldRotateFallback(): bool
+    {
+        // If we don't have a rotation time, we should load fresh
+        if (!$this->lastRotationTime) {
+            return true;
+        }
+
+        // Check if 30 minutes have passed since last rotation
+        $rotationTime = Carbon::parse($this->lastRotationTime);
+        return now()->diffInMinutes($rotationTime) >= $this->rotationInterval;
     }
 
     private function displayHealthTip($tip)
@@ -85,6 +117,21 @@ new class extends Component {
             <span wire:loading>Loading...</span>
         </button>
     </div>
+    
+    @if($isFallback)
+        <!-- Fallback Indicator -->
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-amber-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+                <div>
+                    <h4 class="text-sm font-medium text-amber-800">Showing Sample Health Tips</h4>
+                    <p class="text-xs text-amber-600 mt-1">This is fallback content that rotates every 30 minutes</p>
+                </div>
+            </div>
+        </div>
+    @endif
     
     <article class="bg-white rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-500">
         <div class="p-6">
