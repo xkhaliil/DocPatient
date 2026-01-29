@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\HealthTip;
+use App\Services\HealthTipService;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\HealthTipResource;
 use Illuminate\Http\JsonResponse;
@@ -11,43 +12,30 @@ use Illuminate\Support\Facades\DB;
 
 class HealthTipController extends Controller
 {
+    protected HealthTipService $healthTipService;
+    
+    public function __construct(HealthTipService $healthTipService)
+    {
+        $this->healthTipService = $healthTipService;
+    }
     public function index(): JsonResponse
     {
-        $query = HealthTip::query();
+        $filters = request()->only(['category', 'source', 'search', 'limit', 'order_by', 'order_direction', 'published_from', 'published_to']);
         
-        // Filter by category if provided
-        if (request()->has('category')) {
-            $query->where('category', request('category'));
-        }
+        $result = $this->healthTipService->getHealthTips($filters);
         
-        // Filter by source if provided
-        if (request()->has('source')) {
-            $query->where('source', request('source'));
-        }
+        $statusCode = $result['success'] ? 200 : ($result['data'] === [] ? 404 : 500);
         
-        // Filter by search term if provided
-        if (request()->has('search')) {
-            $search = request('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-        
-        return response()->json($query->get());
+        return response()->json($result, $statusCode);
     }
 
     public function random(): JsonResponse
     {
-        return Cache::remember('random_health_tip', now()->addMinutes(30), function () {
-            $tip = HealthTip::inRandomOrder()->first();
-            
-            if (!$tip) {
-                return response()->json(['message' => 'No health tips available'], 404);
-            }
-            
-            return response()->json(new HealthTipResource($tip));
-        });
+        $result = $this->healthTipService->getRandomHealthTip();
+        
+        $statusCode = $result['success'] ? 200 : 404;
+        
+        return response()->json($result, $statusCode);
     }
 
     public function categories(): JsonResponse

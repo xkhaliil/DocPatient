@@ -5,7 +5,6 @@ use App\Http\Controllers\NewsController;
 use App\Services\NewsApiService;
 use App\Http\Controllers\Api\HealthTipController;
 
-
 Route::prefix('v1')->group(function () {
     Route::get('/health-tips', [HealthTipController::class, 'index']);
     Route::get('/health-tips/random', [HealthTipController::class, 'random']);
