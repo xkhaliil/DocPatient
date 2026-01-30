@@ -13,7 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
-
+        ]);
+        
+        // Exclude API routes from CSRF protection
+        $middleware->validateCsrfTokens(except: [
+            'v1/health-tips',
+            'v1/health-tips/*',
+            'api/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

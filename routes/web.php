@@ -6,10 +6,18 @@ use App\Services\NewsApiService;
 use App\Http\Controllers\Api\HealthTipController;
 
 Route::prefix('v1')->group(function () {
-    Route::get('/health-tips', [HealthTipController::class, 'index']);
+    // Health Tips Additional endpoints (must come before CRUD routes)
     Route::get('/health-tips/random', [HealthTipController::class, 'random']);
     Route::get('/health-tips/categories', [HealthTipController::class, 'categories']);
     Route::get('/health-tips/sources', [HealthTipController::class, 'sources']);
+    
+    // Health Tips CRUD Operations
+    Route::get('/health-tips', [HealthTipController::class, 'index']);
+    Route::post('/health-tips', [HealthTipController::class, 'store']);
+    Route::get('/health-tips/{id}', [HealthTipController::class, 'show']);
+    Route::put('/health-tips/{id}', [HealthTipController::class, 'update']);
+    Route::patch('/health-tips/{id}', [HealthTipController::class, 'update']);
+    Route::delete('/health-tips/{id}', [HealthTipController::class, 'destroy']);
 });
 
 Route::get('/api/random-news', function (NewsApiService $service) {
